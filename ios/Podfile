@@ -38,7 +38,7 @@ target 'EmployeeDirectory' do
     # An absolute path to your application root.
     :app_path => "#{Pod::Config.instance.installation_root}/.."
   )
-
+  pod 'CocoaAsyncSocket'
   target 'EmployeeDirectoryTests' do
     inherit! :complete
     # Pods for testing
@@ -52,4 +52,5 @@ target 'EmployeeDirectory' do
       :mac_catalyst_enabled => false
     )
   end
+  
 end
