@@ -1,5 +1,5 @@
 import React, { useState, useContext } from 'react';
-import { View, TextInput, Button, StyleSheet, Alert } from 'react-native';
+import { View, TextInput, Button, StyleSheet, Alert,Text } from 'react-native';
 import EmployeContext from '../utils/EmployeeContext';
 
 
