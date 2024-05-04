@@ -1,4 +1,4 @@
-import React, { useState, useContext, useCallback, useEffect } from 'react';
+import React, { useState, useContext, useCallback, } from 'react';
 import { View, Text, FlatList, StyleSheet, TextInput, Button } from 'react-native';
 import { useNavigation } from '@react-navigation/native';
 import EmployeContext from '../utils/EmployeeContext';
@@ -21,6 +21,7 @@ export default EmployeeListScreen = () => {
     const handleAddEmployeeFnc = () => {
         navigation.navigate('AddEmployee');
         setIsFocused(false);
+        setSearch('');
     }
 
     const renderEmpolyeCard = useCallback(({ item, index }) =>
