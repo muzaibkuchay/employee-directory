@@ -1,6 +1,7 @@
 import React, { useState, useContext } from 'react';
-import { View, TextInput, Button, StyleSheet, Alert,Text } from 'react-native';
+import { View, Button, StyleSheet, Alert, } from 'react-native';
 import EmployeContext from '../utils/EmployeeContext';
+import CustomTextInput from '../components/input';
 
 
 const AddEmployeeScreen = ({ navigation }) => {
@@ -32,25 +33,11 @@ const AddEmployeeScreen = ({ navigation }) => {
     return (
         <View style={styles.container}>
             <View>
-                <TextInput style={styles.textInput}
-                    placeholder='First Name...'
-                    value={firstName}
-                    onChangeText={setFirstName}
-                />
-                <TextInput style={styles.textInput}
-                    placeholder='Last Name...'
-                    value={lastName}
-                    onChangeText={setLastName}
-                />
-                <TextInput style={styles.textInput}
-                    placeholder='Email...'
-                    value={email}
-                    onChangeText={setEmail}
-                    keyboardType='email-address'
-                />
+                <CustomTextInput label='First Name' placeholder='e.g Jhon...' value={firstName} onChangeText={setFirstName} />
+                <CustomTextInput label='Last Name' placeholder='e.g Doe...' value={lastName} onChangeText={setLastName} />
+                <CustomTextInput label='Email' placeholder='e.g jhondoe@yahoo.com' value={email} onChangeText={setEmail} />
             </View>
-            <Button title='Add Employee' onPress={handleAddEmployee}  />
-
+            <Button title='Add Employee' onPress={handleAddEmployee} />
         </View>
     )
 }
@@ -67,9 +54,13 @@ const styles = StyleSheet.create({
         borderColor: '#ccc',
         borderWidth: 1,
         borderRadius: 5,
-        marginBottom: 10,
+        marginBottom: 16,
         paddingHorizontal: 10,
     },
+    label: {
+        fontSize: 16,
+        marginBottom: 8
+    }
 })
 
 export default AddEmployeeScreen;

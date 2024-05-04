@@ -1,4 +1,4 @@
-import React, { useState, useContext, useCallback } from 'react';
+import React, { useState, useContext, useCallback, useEffect } from 'react';
 import { View, Text, FlatList, StyleSheet, TextInput, Button } from 'react-native';
 import { useNavigation } from '@react-navigation/native';
 import EmployeContext from '../utils/EmployeeContext';
@@ -6,17 +6,16 @@ import EmployeContext from '../utils/EmployeeContext';
 import LottieView from 'lottie-react-native';
 
 export default EmployeeListScreen = () => {
-    const [isDelete, setIsDelete] = useState(null);
-    const { empolyes, search, setSearch, setEmpolyes } = useContext(EmployeContext);
     const navigation = useNavigation();
+    const [isDelete, setIsDelete] = useState(null);
+    const [isFocused, setIsFocused] = useState(false);
+    const { empolyes, search, setSearch, setEmpolyes } = useContext(EmployeContext);
 
     const handleDelEmploye = (index) => {
-        setIsDelete(index);
         const updatedEmployes = [...empolyes];
         updatedEmployes.splice(index, 1);
         setEmpolyes(updatedEmployes);
-
-
+        setIsDelete(index);
     }
 
     const renderEmpolyeCard = useCallback(({ item, index }) =>
@@ -24,7 +23,7 @@ export default EmployeeListScreen = () => {
         <Text style={styles.empText}>{`${item.name.first} ${item.name.last}`}</Text>
         <Text style={styles.empText}>{`${item.email}`}</Text>
         <View style={styles.btnContainer}>
-            <Button title='Edit' onPress={() => navigation.navigate('EditEmployee', { employeeIndex: index })}/>
+            <Button title='Edit' onPress={() => navigation.navigate('EditEmployee', { employeeIndex: index })} />
             {
                 isDelete === index ? (
                     <LottieView
@@ -32,14 +31,14 @@ export default EmployeeListScreen = () => {
                         autoPlay
                         loop={false}
                         onAnimationFinish={() => {
-                            setIsDelete(null);
                             handleDelEmploye(null);
+                            setIsDelete(null);
                         }}
                         style={styles.animation}
                     />
                 )
                     :
-                    (<Button title='REMOVE' color={'#D2042D'} onPress={() => handleDelEmploye(index)}/>)
+                    (<Button title='REMOVE' color={'#D2042D'} onPress={() => handleDelEmploye(index)} />)
             }
 
         </View>
@@ -47,28 +46,28 @@ export default EmployeeListScreen = () => {
 
 
     return (
-        <React.Fragment>
-            <View style={styles.container}>
-                <TextInput
-                    style={styles.searchTextInput}
-                    placeholder='Search...'
-                    value={search}
-                    onChangeText={setSearch}
-                />
-                <FlatList
-                    showsVerticalScrollIndicator={false}
-                    data={empolyes}
-                    keyExtractor={(item, index) => index.toString()}
-                    renderItem={renderEmpolyeCard}
-                />
-                <Button
-                    title='Add Employee'
-                    onPress={() => navigation.navigate('AddEmployee')}
 
-                />
-            </View>
-        </React.Fragment>
+        <View style={styles.container}>
+            <TextInput
+                style={[styles.searchTextInput, isFocused && styles.focused]}
+                placeholderTextColor="#999"
+                placeholder='Search...'
+                value={search}
+                onChangeText={setSearch}
+                onFocus={() => setIsFocused(true)}
+            />
+            <FlatList
+                showsVerticalScrollIndicator={false}
+                data={empolyes}
+                keyExtractor={(item, index) => index.toString()}
+                renderItem={renderEmpolyeCard}
+            />
+            <Button
+                title='Add Employee'
+                onPress={() => navigation.navigate('AddEmployee')}
 
+            />
+        </View>
 
     )
 
@@ -106,7 +105,7 @@ const styles = StyleSheet.create({
         height: 40,
         borderColor: '#CCC',
         borderWidth: 1,
-        borderRadius: 4,
+        borderRadius: 10,
         paddingHorizontal: 10,
         marginBottom: 10,
         shadowColor: 'rgba(0, 0, 0, 0)',
@@ -114,6 +113,7 @@ const styles = StyleSheet.create({
         shadowOpacity: 0.3,
         elevation: 10,
         backgroundColor: '#FFF',
+        color: '#000'
     },
     btnContainer: {
         flexDirection: 'row',
@@ -126,5 +126,8 @@ const styles = StyleSheet.create({
         aspectRatio: 1,
 
     },
+    focused: {
+        borderColor: '#318CE7'
+    }
 
 })
