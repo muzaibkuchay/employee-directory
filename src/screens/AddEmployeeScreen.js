@@ -7,36 +7,40 @@ import CustomTextInput from '../components/input';
 const AddEmployeeScreen = ({ navigation }) => {
     const { empolyes, setEmpolyes } = useContext(EmployeContext);
 
-    const [firstName, setFirstName] = useState('');
-    const [lastName, setLastName] = useState('');
-    const [email, setEmail] = useState('');
-    const [isFocused, setIsFocused] = useState(null);
+    const [userData, setUserData] = useState({
+        firstName: '',
+        lastName: '',
+        email: ''
+
+    })
+
+    const handleInputChange = (fieldName, value) => {
+        setUserData((prevUserData) => ({
+            ...prevUserData,
+            [fieldName]: value
+        }));
+    };
 
     const handleAddEmployee = () => {
-        if (firstName && lastName && email) {
-            const newEmployee = {
-                name: {
-                    first: firstName,
-                    last: lastName
-                },
-                email: email
-            };
-            setEmpolyes([...empolyes, newEmployee]);
-            navigation.goBack();
-            Alert.alert('Employee added successfully.');
-
-        }
-        else {
-            Alert.alert('All details are required.');
-        }
+        console.log('user data', userData.firstName);
+        const newEmployee = {
+            name: {
+                first: userData.firstName,
+                last: userData.lastName
+            },
+            email: userData.email
+        };
+        setEmpolyes([...empolyes, newEmployee]);
+        navigation.goBack();
+        Alert.alert('Employee added successfully.');
     }
 
     return (
         <View style={styles.container}>
             <View>
-                <CustomTextInput label='First Name' placeholder='e.g Jhon...' value={firstName} onChangeText={setFirstName} />
-                <CustomTextInput label='Last Name' placeholder='e.g Doe...' value={lastName} onChangeText={setLastName} />
-                <CustomTextInput label='Email' placeholder='e.g jhondoe@yahoo.com' value={email} onChangeText={setEmail} />
+                <CustomTextInput handleInputChange={(text) => handleInputChange('firstName', text)} inputType='name' label='First Name' placeholder='e.g Jhon...' />
+                <CustomTextInput handleInputChange={(text) => handleInputChange('lastName', text)} inputType='name' label='Last Name' placeholder='e.g Doe...' />
+                <CustomTextInput handleInputChange={(text) => handleInputChange('email', text)} inputType='email' label='Email' placeholder='e.g Jhondoe@yahoo.com' />
             </View>
             <Button title='Add Employee' onPress={handleAddEmployee} />
         </View>
