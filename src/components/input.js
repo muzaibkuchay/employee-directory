@@ -10,6 +10,7 @@ const CustomTextInput = React.memo(({ label, placeholder, value, onChangeText })
                 value={value}
                 onChangeText={onChangeText}
                 keyboardType='email-address'
+                multiline={false}
             />
         </React.Fragment>
     )

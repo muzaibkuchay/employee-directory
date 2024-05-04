@@ -18,6 +18,11 @@ export default EmployeeListScreen = () => {
         setIsDelete(index);
     }
 
+    const handleAddEmployeeFnc = () => {
+        navigation.navigate('AddEmployee');
+        setIsFocused(false);
+    }
+
     const renderEmpolyeCard = useCallback(({ item, index }) =>
     (<View style={styles.empolyeItem}>
         <Text style={styles.empText}>{`${item.name.first} ${item.name.last}`}</Text>
@@ -55,6 +60,7 @@ export default EmployeeListScreen = () => {
                 value={search}
                 onChangeText={setSearch}
                 onFocus={() => setIsFocused(true)}
+                multiline={false}
             />
             <FlatList
                 showsVerticalScrollIndicator={false}
@@ -62,11 +68,7 @@ export default EmployeeListScreen = () => {
                 keyExtractor={(item, index) => index.toString()}
                 renderItem={renderEmpolyeCard}
             />
-            <Button
-                title='Add Employee'
-                onPress={() => navigation.navigate('AddEmployee')}
-
-            />
+            <Button title='Add Employee' onPress={handleAddEmployeeFnc} />
         </View>
 
     )
