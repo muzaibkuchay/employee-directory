@@ -1,10 +1,11 @@
 import React, { useState, useContext } from 'react';
 import { View, TextInput, Button, StyleSheet, Alert } from 'react-native';
-import EmployeContext from '../utils/EmployeeContext';
 import { useNavigation, useRoute } from '@react-navigation/native';
 
-const EditEmployeeScreen = () => {
+import EmployeContext from '../utils/EmployeeContext';
+import CustomTextInput from '../components/input';
 
+const EditEmployeeScreen = () => {
     const navigation = useNavigation();
     const route = useRoute();
     const { employeeIndex } = route.params;
@@ -27,39 +28,21 @@ const EditEmployeeScreen = () => {
             setEmpolyes(updateEmployees);
             Alert.alert('Employee updated successfully.');
             navigation.goBack();
-
-
         }
         else {
             Alert.alert('Unable to update the employee details');
         }
-
     }
     return (
         <View style={styles.container}>
             <View>
-                <TextInput style={styles.textInput}
-                    placeholder='First Name...'
-                    value={firstName}
-                    onChangeText={setFirstName}
-                />
-                <TextInput style={styles.textInput}
-                    placeholder='Last Name...'
-                    value={lastName}
-                    onChangeText={setLastName}
-                />
-                <TextInput style={styles.textInput}
-                    placeholder='Email...'
-                    value={email}
-                    onChangeText={setEmail}
-                    keyboardType='email-address'
-                />
+                <CustomTextInput label='First Name' value={firstName} onChangeText={setFirstName} />
+                <CustomTextInput label='Last Name' value={lastName} onChangeText={setLastName} />
+                <CustomTextInput label='Email' value={email} onChangeText={setEmail} />
             </View>
             <Button title='Save Changes' onPress={handleEditEmployee} />
-
         </View>
     )
-
 }
 const styles = StyleSheet.create({
     container: {
@@ -67,14 +50,6 @@ const styles = StyleSheet.create({
         padding: 20,
         backgroundColor: '#fff',
         justifyContent: 'space-between'
-    },
-    textInput: {
-        height: 40,
-        borderColor: '#ccc',
-        borderWidth: 1,
-        borderRadius: 5,
-        marginBottom: 10,
-        paddingHorizontal: 10,
     },
 })
 

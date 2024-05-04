@@ -1,9 +1,10 @@
 import React, { useState, useContext, useCallback, } from 'react';
 import { View, Text, FlatList, StyleSheet, TextInput, Button } from 'react-native';
 import { useNavigation } from '@react-navigation/native';
-import EmployeContext from '../utils/EmployeeContext';
 
 import LottieView from 'lottie-react-native';
+
+import EmployeContext from '../utils/EmployeeContext';
 
 export default EmployeeListScreen = () => {
     const navigation = useNavigation();
@@ -52,7 +53,6 @@ export default EmployeeListScreen = () => {
 
 
     return (
-
         <View style={styles.container}>
             <TextInput
                 style={[styles.searchTextInput, isFocused && styles.focused]}
@@ -97,7 +97,6 @@ const styles = StyleSheet.create({
         elevation: 10,
         borderLeftWidth: 8,
         backgroundColor: '#FFF',
-
     },
     empText: {
         fontSize: 12,

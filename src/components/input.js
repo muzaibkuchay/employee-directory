@@ -1,16 +1,28 @@
-import React from "react";
-import { TextInput, View, Text, StyleSheet } from 'react-native';
+import React, { useState } from "react";
+import { TextInput, Text, StyleSheet } from 'react-native';
 
-const CustomTextInput = React.memo(({ label, placeholder, value, onChangeText }) => {
+const CustomTextInput = React.memo(({ label, onFocus, onBlur, ...rest }) => {
+    const [isFocused, setIsFocused] = useState(false);
+
+    const handleFocus = () => {
+        setIsFocused(true);
+        if (onFocus) {
+            onFocus();
+        }
+    };
+    const handleBlur = () => {
+        setIsFocused(false);
+    };
+
     return (
         <React.Fragment>
             <Text style={styles.label}>{label}</Text>
-            <TextInput style={styles.textInput}
-                placeholder={placeholder}
-                value={value}
-                onChangeText={onChangeText}
+            <TextInput style={[styles.textInput, isFocused && styles.focused]}
+                onFocus={handleFocus}
+                onBlur={handleBlur}
                 keyboardType='email-address'
                 multiline={false}
+                {...rest}
             />
         </React.Fragment>
     )
@@ -30,6 +42,9 @@ const styles = StyleSheet.create({
     label: {
         fontSize: 16,
         marginBottom: 8
+    },
+    focused: {
+        borderColor: '#318CE7'
     }
 })
 

@@ -10,6 +10,7 @@ const AddEmployeeScreen = ({ navigation }) => {
     const [firstName, setFirstName] = useState('');
     const [lastName, setLastName] = useState('');
     const [email, setEmail] = useState('');
+    const [isFocused, setIsFocused] = useState(null);
 
     const handleAddEmployee = () => {
         if (firstName && lastName && email) {
@@ -49,18 +50,6 @@ const styles = StyleSheet.create({
         backgroundColor: '#fff',
         justifyContent: 'space-between'
     },
-    textInput: {
-        height: 40,
-        borderColor: '#ccc',
-        borderWidth: 1,
-        borderRadius: 5,
-        marginBottom: 16,
-        paddingHorizontal: 10,
-    },
-    label: {
-        fontSize: 16,
-        marginBottom: 8
-    }
 })
 
 export default AddEmployeeScreen;

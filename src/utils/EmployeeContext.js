@@ -1,9 +1,7 @@
-
 import React, { useState, useEffect, createContext } from 'react';
 import { StyleSheet } from 'react-native';
-import { fetchRandomUsers } from './api';
-
 import LottieView from 'lottie-react-native';
+import { fetchRandomUsers } from './api';
 
 const EmployeContext = createContext();
 
