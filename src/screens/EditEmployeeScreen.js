@@ -36,9 +36,9 @@ const EditEmployeeScreen = () => {
     return (
         <View style={styles.container}>
             <View>
-                <CustomTextInput label='First Name' value={firstName} onChangeText={setFirstName} />
-                <CustomTextInput label='Last Name' value={lastName} onChangeText={setLastName} />
-                <CustomTextInput label='Email' value={email} onChangeText={setEmail} />
+                <CustomTextInput inputType='name' label='First Name' value={firstName} onChangeText={setFirstName} />
+                <CustomTextInput inputType='name' label='Last Name' value={lastName} onChangeText={setLastName} />
+                <CustomTextInput inputType='email' label='Email' value={email} onChangeText={setEmail} />
             </View>
             <Button title='Save Changes' onPress={handleEditEmployee} />
         </View>

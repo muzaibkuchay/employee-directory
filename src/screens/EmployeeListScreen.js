@@ -1,15 +1,17 @@
-import React, { useState, useContext, useCallback, } from 'react';
+import React, { useState, useContext, useCallback, useEffect } from 'react';
 import { View, Text, FlatList, StyleSheet, TextInput, Button } from 'react-native';
 import { useNavigation } from '@react-navigation/native';
 
 import LottieView from 'lottie-react-native';
 
 import EmployeContext from '../utils/EmployeeContext';
+import { fetchRandomUsers } from '../utils/api';
 
 export default EmployeeListScreen = () => {
     const navigation = useNavigation();
     const [isDelete, setIsDelete] = useState(null);
     const [isFocused, setIsFocused] = useState(false);
+    const [count, setCount] = useState(10);
     const { empolyes, search, setSearch, setEmpolyes } = useContext(EmployeContext);
 
     const handleDelEmploye = (index) => {
@@ -23,6 +25,12 @@ export default EmployeeListScreen = () => {
         navigation.navigate('AddEmployee');
         setIsFocused(false);
         setSearch('');
+    }
+    const handleEndReached = async () => {
+        const updatedCount = count + 10;
+        setCount(updatedCount);
+        const randomusers = await fetchRandomUsers(count);
+        setEmpolyes((prevEmp) => [...prevEmp, ...randomusers]);
     }
 
     const renderEmpolyeCard = useCallback(({ item, index }) =>
@@ -68,6 +76,8 @@ export default EmployeeListScreen = () => {
                 data={empolyes}
                 keyExtractor={(item, index) => index.toString()}
                 renderItem={renderEmpolyeCard}
+                onEndReached={handleEndReached}
+                refreshing={true}
             />
             <Button title='Add Employee' onPress={handleAddEmployeeFnc} />
         </View>
