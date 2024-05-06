@@ -8,13 +8,15 @@ This is a [React Native] project aimed at [A minimal project having source from 
 - App user can Add, Edit & Delete an employee data.
 - Search an employee from directory.
 - Validation and error handling.
+- Dynamic loading of data.
+- Lottie Animations
 
 ## Installation
 To run this project locally, follow these steps:
 
 1. Clone this repository.
    ```bash
-   git clone https://github.com/muzaibkuchay/employee-directory
+   git clone https://github.com//employee-directory
    ```
 
 2. Navigate into the project directory.
