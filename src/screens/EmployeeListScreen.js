@@ -1,5 +1,5 @@
-import React, { useState, useContext, useCallback, useEffect } from 'react';
-import { View, Text, FlatList, StyleSheet, TextInput, Button } from 'react-native';
+import React, { useState, useContext, useCallback, useRef } from 'react';
+import { View, Text, FlatList, StyleSheet, TextInput, Button, Image, TouchableOpacity } from 'react-native';
 import { useNavigation } from '@react-navigation/native';
 
 import LottieView from 'lottie-react-native';
@@ -8,17 +8,20 @@ import EmployeContext from '../utils/EmployeeContext';
 import { fetchRandomUsers } from '../utils/api';
 
 export default EmployeeListScreen = () => {
+    const animationRefs = useRef([]);
     const navigation = useNavigation();
-    const [isDelete, setIsDelete] = useState(null);
     const [isFocused, setIsFocused] = useState(false);
     const [count, setCount] = useState(10);
     const { empolyes, search, setSearch, setEmpolyes } = useContext(EmployeContext);
 
     const handleDelEmploye = (index) => {
-        const updatedEmployes = [...empolyes];
-        updatedEmployes.splice(index, 1);
-        setEmpolyes(updatedEmployes);
-        setIsDelete(index);
+        animationRefs.current[index].play();
+        // Wait for animation to finish before updating state
+        setTimeout(() => {
+            const updatedEmployes = [...empolyes];
+            updatedEmployes.splice(index, 1);
+            setEmpolyes(updatedEmployes);
+        }, 2500);
     }
 
     const handleAddEmployeeFnc = () => {
@@ -32,32 +35,44 @@ export default EmployeeListScreen = () => {
         const randomusers = await fetchRandomUsers(count);
         setEmpolyes((prevEmp) => [...prevEmp, ...randomusers]);
     }
-
-    const renderEmpolyeCard = useCallback(({ item, index }) =>
-    (<View style={styles.empolyeItem}>
-        <Text style={styles.empText}>{`${item.name.first} ${item.name.last}`}</Text>
-        <Text style={styles.empText}>{`${item.email}`}</Text>
-        <View style={styles.btnContainer}>
-            <Button title='Edit' onPress={() => navigation.navigate('EditEmployee', { employeeIndex: index })} />
-            {
-                isDelete === index ? (
+    const onAnimationFinish = (index) => {
+        animationRefs.current[index].reset();
+    };
+    const renderEmpolyeCard = useCallback(({ item, index }) => {
+        const { picture: { large } = {} } = item;
+        const uri = large ? large : "https://reactnative.dev/img/tiny_logo.png";
+        const { title = '', first, last } = item.name;
+        return (<View style={styles.empolyeItem}>
+            <View style={styles.imageContainer}>
+                <View>
+                    <Text style={styles.empText}>{`${title} ${first} ${last}`}</Text>
+                    <Text style={styles.empText}>{`${item.email}`}</Text>
+                </View>
+                <Image
+                    resizeMethod={'auto'}
+                    progressiveRenderingEnabled
+                    style={styles.image}
+                    source={{
+                        uri: `${uri}`
+                    }} />
+            </View>
+            <View style={styles.btnContainer}>
+                <Button title='Edit' onPress={() => navigation.navigate('EditEmployee', { employeeIndex: index })} />
+                <TouchableOpacity onPress={() => handleDelEmploye(index)} style={styles.deleteBtn}>
                     <LottieView
+                        ref={ref => animationRefs.current[index] = ref}
                         source={require('../json/animations/delete.json')}
-                        autoPlay
                         loop={false}
-                        onAnimationFinish={() => {
-                            handleDelEmploye(null);
-                            setIsDelete(null);
-                        }}
+                        autoPlay={false}
+                        onAnimationFinish={() => onAnimationFinish(index)}
                         style={styles.animation}
                     />
-                )
-                    :
-                    (<Button title='REMOVE' color={'#D2042D'} onPress={() => handleDelEmploye(index)} />)
-            }
+                </TouchableOpacity>
 
-        </View>
-    </View >))
+            </View>
+        </View >)
+    }
+    )
 
 
     return (
@@ -95,8 +110,7 @@ const styles = StyleSheet.create({
     },
     empolyeItem: {
         padding: 10,
-        marginBottom: 10,
-        marginTop: 10,
+        marginVertical: 13,
         marginHorizontal: 5,
         borderWidth: 1,
         borderColor: '#CCC',
@@ -110,8 +124,9 @@ const styles = StyleSheet.create({
     },
     empText: {
         fontSize: 12,
-        fontWeight: 'bold',
-        color: '#000'
+        fontWeight: '500',
+        color: '#36454F',
+
     },
     searchTextInput: {
         height: 40,
@@ -130,16 +145,41 @@ const styles = StyleSheet.create({
     btnContainer: {
         flexDirection: 'row',
         justifyContent: 'space-between',
+        alignItems: 'center',
         marginTop: 10,
     },
+    deleteBtn: {
+        width: '15%',
+        justifyContent: 'center',
+        borderWidth: 0.8,
+        borderRadius: 2,
+        borderColor: '#CCC',
+        alignItems: 'center',
+        shadowColor: 'rgba(0, 0, 0, 0)',
+        shadowOffset: { x: 0, y: 10 },
+        shadowOpacity: 0.3,
+        elevation: 10,
+        color: '#000'
+    },
     animation: {
-        width: '10%',
-        height: '10%',
+        width: 28,
+        height: 28,
         aspectRatio: 1,
 
     },
     focused: {
         borderColor: '#318CE7'
+    },
+    imageContainer: {
+        flexDirection: 'row',
+        justifyContent: 'space-between',
+    },
+    image: {
+        width: 50,
+        height: 50,
+        borderRadius: 8,
+        borderWidth: 1,
+        borderColor: '#CCC'
     }
 
 })
