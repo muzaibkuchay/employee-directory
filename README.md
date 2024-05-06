@@ -16,7 +16,7 @@ To run this project locally, follow these steps:
 
 1. Clone this repository.
    ```bash
-   git clone https://github.com//employee-directory
+   git clone https://github.com/moniskhankuchai/employee-directory
    ```
 
 2. Navigate into the project directory.
